@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: mohamedswelam/client:11
+        image: eslammohamed14/client:11
         ports:
         - containerPort: 3000
         env:
