@@ -5,20 +5,20 @@ pipeline {
         stage('Preparation') {
             steps {
                 echo 'prepare github repo....'
-                git branch: 'master', url: 'https://github.com/swelams/badreads'
+                git branch: 'main', url: 'https://github.com/eslammohammed24/badreads.git'
             }
         }
         stage('Build-client') {
             steps {
                 echo 'building client image....'
-                sh "docker build badreads-frontend/. -t mohamedswelam/client:${env.BUILD_NUMBER}"
+                sh "docker build badreads-frontend/. -t eslammohamed14/client:${env.BUILD_NUMBER}"
             }
         }
 
         stage('Build-server') {
             steps {
                 echo 'building server image...'
-                sh "docker build badreads-backend/. -t mohamedswelam/server:${env.BUILD_ID}"
+                sh "docker build badreads-backend/. -t eslammohamed14/server:${env.BUILD_ID}"
             }
         }
 
@@ -28,7 +28,7 @@ pipeline {
                 echo ' pushing client image into docker repo...'
                 withCredentials([usernamePassword(credentialsId: 'docker-hub-registry', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh "echo $PASSWORD | docker login -u $USERNAME --password-stdin"
-                    sh "docker push mohamedswelam/client:${env.BUILD_NUMBER}"
+                    sh "docker push eslammohamed14/client:${env.BUILD_NUMBER}"
                     
                 }
             }
@@ -39,7 +39,7 @@ pipeline {
                 echo 'pushing server image to docker repo...'
                 withCredentials([usernamePassword(credentialsId: 'docker-hub-registry', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh "echo $PASSWORD | docker login -u $USERNAME --password-stdin"
-                    sh "docker push mohamedswelam/server:${env.BUILD_ID}"
+                    sh "docker push eslammohamed14/server:${env.BUILD_ID}"
                     
                 }
             }
@@ -47,8 +47,8 @@ pipeline {
         stage('updating deployment files'){
             steps {
                 echo 'replacing old images with the new one'
-                sh "sed -i \"s|image:.*|image: mohamedswelam/client:${env.BUILD_NUMBER}|g\" k8s/frontend-deployment.yaml"
-                sh "sed -i \"s|image:.*|image: mohamedswelam/server:${env.BUILD_ID}|g\" k8s/backend-deployment.yaml"
+                sh "sed -i \"s|image:.*|image: eslammohamed14/client:${env.BUILD_NUMBER}|g\" k8s/frontend-deployment.yaml"
+                sh "sed -i \"s|image:.*|image: eslammohamed14/server:${env.BUILD_ID}|g\" k8s/backend-deployment.yaml"
 
             }
         }
