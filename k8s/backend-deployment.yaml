@@ -18,7 +18,7 @@ spec:
           claimName: images-presistent-volume-claim
       containers:
       - name: backend
-        image: kareemelkasaby/badreads-backend:v1
+        image: eslammohamed14/server:3
         imagePullPolicy: Always
         ports:
         - containerPort: 4000
